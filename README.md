@@ -15,7 +15,7 @@ This creates a specific environment with all the libraries in need!
 
 
 ## to start the chatbot
-```chainlit run .\property_finder\frontend\main.py```
+
 
 
 
@@ -26,7 +26,7 @@ To specify configurations use .env file
 
 ```
 OPENAI_API_KEY= openai key
-OPENAI_MODEL = gpt-3.5-turbo-16k
+OPENAI_MODEL = gpt-4-1106-preview
 CHUNK_SIZE = 1000
 TERMINATE_TOKEN =  TERMINATE
 REQUEST_TIMEOUT = 300
@@ -37,6 +37,5 @@ CODE_DIR = /tmp/property_finder
 SAVE_HTML = /tmp/property_finder/html_savills
 LLM_CACHE = False
 LANGCHAIN_DEBUG = True
-PROJECT_ROOT =  the root of your project 
-SIZE_MEMORY = 5
+
 ```
