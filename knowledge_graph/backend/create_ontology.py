@@ -51,9 +51,7 @@ def extract_ontology(ontology_tables):
     }},
     "required": ["relations", "terms"],
     }
-    #chain = LLMChain( llm=cfg.llm, prompt=prompt_factory(t.human_message, t.system_message))
     chain = create_extraction_chain(schema, cfg.llm)
-    #properties_json = chain.run({"user_input": user_input})
     list_ontology = chain.run(ontology_tables)
     ontology_relations = list_ontology[0]['ontology_relations']
     ontology_terms = list_ontology[0]['ontology_terms']

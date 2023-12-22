@@ -12,6 +12,8 @@ openai = "^1.6.0"
 pydantic = "^2.5.2"
 python-dotenv = "^1.0.0"
 tomli = "^2.0.1"
+networkx = "^3.2.1"
+matplotlib = "^3.8.2"
 
 [tool.poetry.group.dev.dependencies]
 black = "^23.12.0"
