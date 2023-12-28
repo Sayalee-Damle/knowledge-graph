@@ -1,8 +1,11 @@
+import shutil
 import networkx as nx
 import matplotlib.pyplot as plt
 from itertools import chain
+from uuid import uuid4
 
 import knowledge_graph.backend.create_ontology as ontology
+from knowledge_graph.configuration.config import cfg
 
 def create_network(ontology_relations: list):
     
@@ -35,12 +38,31 @@ def source_dict(lst_src, ontology_relations):
                 pass
     return src_dict
 
-def create_subgraph(G, src_list, src_dict):
-    H = []
-    for src in src_list:
-        print(src, unique_target(src_dict[src]))
-        H.append(G.subgraph(G.nodes()))
-    return H
+def create_subgraph(G):
+    dict_graphs = subg.find_subgraphs(G)
+    options = {
+    'node_color':"none",
+    'node_size': 100,
+    'node_shape':"s",
+    'width': 3,
+    'arrowstyle': '-|>',
+    'arrowsize': 12,
+    'arrows' : True,
+    'font_size': 8
+    }
+    path_fig = cfg.save_fig_path
+    if path_fig.exists():
+        shutil.rmtree(path_fig)
+    path_fig.mkdir(parents=True)
+    for k, v in dict_graphs.items():
+        print("in for")
+        H = G.subgraph([node.id for node in v])
+        
+        print(path_fig)
+        nx.draw(H, with_labels=True, **options, bbox=dict(facecolor='none', edgecolor='black', boxstyle='round,pad=1'))
+        nx.write_gexf(H, path_fig/f"subgraph_{k}.gefx")
+        return path_fig
+        #plt.show()
 
 
 
@@ -55,6 +77,8 @@ if __name__ == '__main__':
     G = create_network(lst)
     dict_graphs = subg.find_subgraphs(G)
     print(dict_graphs)
+    path_fig = create_subgraph(G)
+
    
 
     #H = create_subgraph(G, u_lst, src_lst)
@@ -71,8 +95,8 @@ if __name__ == '__main__':
     """print(type(G))
     for n in G.neighbors('Car'):
         print(n, type(n))"""
-    for k, v in dict_graphs.items():
+    """for k, v in dict_graphs.items():
         print("in for")
         H = G.subgraph([node.id for node in v])
         nx.draw(H, with_labels=True, **options, bbox=dict(facecolor='none', edgecolor='black', boxstyle='round,pad=1'))
-        plt.show()
+        plt.show()"""

@@ -5,7 +5,7 @@ This tool will create knowledge graphs
 
 
 ```
-conda create -n knowledge_graph python=3.11
+conda create -n knowledge_graph python=3.12
 conda activate knowledge_graph
 pip install poetry if this doesn't work use : pip install poetry --user
 poetry install
