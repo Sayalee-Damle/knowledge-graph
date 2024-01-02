@@ -6,6 +6,8 @@ from uuid import uuid4
 
 import knowledge_graph.backend.create_ontology as ontology
 from knowledge_graph.configuration.config import cfg
+import knowledge_graph.backend.create_subgraphs as subg
+import knowledge_graph.backend.read_graph as read_g
 
 def create_network(ontology_relations: list):
     
@@ -39,7 +41,9 @@ def source_dict(lst_src, ontology_relations):
     return src_dict
 
 def create_subgraph(G):
+    path_desc = cfg.desc_dir/f"graph_desc_{uuid4()}.txt"
     dict_graphs = subg.find_subgraphs(G)
+    print(dict_graphs)
     options = {
     'node_color':"none",
     'node_size': 100,
@@ -55,13 +59,21 @@ def create_subgraph(G):
         shutil.rmtree(path_fig)
     path_fig.mkdir(parents=True)
     for k, v in dict_graphs.items():
+        
+        print(k)
         print("in for")
         H = G.subgraph([node.id for node in v])
         
         print(path_fig)
         nx.draw(H, with_labels=True, **options, bbox=dict(facecolor='none', edgecolor='black', boxstyle='round,pad=1'))
-        nx.write_gexf(H, path_fig/f"subgraph_{k}.gefx")
-        return path_fig
+        path_subg = path_fig/f"subgraph_{k}.gefx"
+        nx.write_gexf(H, path_subg)
+        
+        try:
+            read_g.save_description(path_subg, path_desc)
+        except:
+            pass
+    return path_desc
         #plt.show()
 
 
@@ -82,7 +94,7 @@ if __name__ == '__main__':
    
 
     #H = create_subgraph(G, u_lst, src_lst)
-    options = {
+    """options = {
     'node_color':"none",
     'node_size': 100,
     'node_shape':"s",
@@ -92,7 +104,7 @@ if __name__ == '__main__':
     'arrows' : True,
     'font_size': 8
 }
-    """print(type(G))
+    print(type(G))
     for n in G.neighbors('Car'):
         print(n, type(n))"""
     """for k, v in dict_graphs.items():

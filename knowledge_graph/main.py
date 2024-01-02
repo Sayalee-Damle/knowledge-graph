@@ -1,13 +1,28 @@
 import knowledge_graph.backend.create_ontology as ontology
 import knowledge_graph.backend.create_graph as create_g
 import knowledge_graph.backend.read_graph as read_g
+from knowledge_graph.configuration.log_factory import logger
+import knowledge_graph.backend.qna_service as qna
 
 def get_ontology_from_text(text: str):
     table = ontology.return_ontology(text)
     ontology_relations, ontology_terms = ontology.extract_ontology(table)
     G = create_g.create_network(list(ontology_relations))
-    path_fig = create_g.create_subgraph(G)
-    read_g.read_all_clusters(path_fig)
+    path_description = create_g.create_subgraph(G)
+    #read_g.read_all_clusters(path_fig)
+    return path_description
+    
+def qna_bot(text, path_description):
+    while True:
+        ques = input("Do you have any questions?")
+        if ques.lower() in ('y', 'yes'):
+            query = input("Question: ")
+            ans = qna.return_answer(text, path_description, query)
+            print(ans)
+
+        else:
+            break
+
 
 
 
@@ -21,5 +36,7 @@ Cars have controls for driving, parking, passenger comfort, and a variety of lam
 There are costs and benefits to car use. The costs to the individual include acquiring the vehicle, interest payments (if the car is financed), repairs and maintenance, fuel, depreciation, driving time, parking fees, taxes, and insurance.[9] The costs to society include maintaining roads, land use, road congestion, air pollution, noise pollution, public health, and disposing of the vehicle at the end of its life. Traffic collisions are the largest cause of injury-related deaths worldwide.[10] Personal benefits include on-demand transportation, mobility, independence, and convenience.[11] Societal benefits include economic benefits, such as job and wealth creation from the automotive industry, transportation provision, societal well-being from leisure and travel opportunities, and revenue generation from taxes. People's ability to move flexibly from place to place has far-reaching implications for the nature of societies.[12] There are around one billion cars in use worldwide. 
 Car usage is increasing rapidly, especially in China, India, and other newly industrialized countries.[13]"""
 
-    get_ontology_from_text(input_val)
+    #path_desc = get_ontology_from_text(input_val)
+    path_desc = r"C:\tmp\graph_desc\graph_desc_da7a5b2c-d182-4afa-b480-e86e347ab0b4.txt"
+    print(qna_bot(input_val, path_desc))
     

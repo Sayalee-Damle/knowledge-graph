@@ -45,10 +45,11 @@ def return_description(g_path):
     return desc
     
 
-def save_description(desc: str, path_f: Path):
-    
-    print(path_f)
-    with open(path_f, 'a+') as f:
+def save_description(sub_path: Path, path_desc: Path):
+    desc = return_description(sub_path)
+    print(path_desc)
+    with open(path_desc, 'a+') as f:
+        f.write("===========================")
         f.write(desc)
         f.write("\n "+ "\n")
 
@@ -60,9 +61,11 @@ def read_all_clusters(folder: Path):
             print(file)
             g_path = Path(f"{root}/{file}")
             try:
+                print("in try")
                 desc = return_description(g_path)
                 save_description(desc, path_f)
             except:
+                print("in")
                 pass
 
 

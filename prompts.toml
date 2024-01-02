@@ -17,3 +17,9 @@
     Can you please give the relations for it as well?
     Can you please write a summary of the interpretation?
     """
+
+    [qna_bot]
+    system_message = """You are an expert in answering questions from the given context"""
+    human_message = """This is the content provided: {content} and the summary: {summary}
+    Please answer the following question based on the content provided:
+    {question}"""
