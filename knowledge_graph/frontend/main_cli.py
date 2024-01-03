@@ -1,3 +1,4 @@
+from pathlib import Path
 import knowledge_graph.backend.create_ontology as ontology
 import knowledge_graph.backend.create_graph as create_g
 import knowledge_graph.backend.read_graph as read_g
@@ -14,10 +15,10 @@ def get_ontology_from_text(text: str):
     G = create_g.create_network(list(ontology_relations))
     path_description = create_g.create_subgraph(G)
     # read_g.read_all_clusters(path_fig)
-    return path_description
+    return Path(path_description)
 
 
-def qna_bot(text, path_description):
+def qna_bot(text: str, path_description: Path):
     """Input: input text and the path of the .txt file of the summary
     Returns: Answer to user question"""
     while True:
@@ -40,5 +41,5 @@ Wild Animals | Wild animals provide various useful substances and animal product
 
 Nature and wildlife are largely associated with humans for several reasons, such as emotional and social issues. The balanced functioning of the biosphere depends on endless interactions among microorganisms, plants and animals. This has led to countless efforts by humans for the conservation of animals and to protect them from extinction. Animals have occupied a special place of preservation and veneration in various cultures worldwide."""
     path_desc = get_ontology_from_text(input_val)
-    # path_desc = r"C:\tmp\graph_desc\graph_desc_da7a5b2c-d182-4afa-b480-e86e347ab0b4.txt"
+    #path_desc = r"C:\tmp\graph_desc\graph_desc_da7a5b2c-d182-4afa-b480-e86e347ab0b4.txt"
     print(qna_bot(input_val, path_desc))

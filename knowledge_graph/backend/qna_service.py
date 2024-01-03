@@ -1,3 +1,4 @@
+from pathlib import Path
 from langchain.chains import LLMChain
 from langchain.prompts import (
     PromptTemplate,
@@ -34,12 +35,12 @@ def prompt_factory() -> ChatPromptTemplate:
     return ChatPromptTemplate(messages=prompt_msgs)
 
 
-def return_answer(input_text, summary_path, query):
+def return_answer(input_text: str, summary_path: Path, query: str):
     """Chain function for finding answer to question"""
-    f = open(summary_path, "r+")
-    summary = f.read()
-    db = v_db.create_embeddings(input_text)
-    content = v_db.similarity_search(db, query)
+
+    db_text, db_summary = v_db.create_embeddings_text(input_text, summary_path)
+    content_text = v_db.similarity_search(db_text, query)
+    content_summary = v_db.similarity_search(db_summary, query)
     prompt = prompt_factory()
     chain = LLMChain(llm=cfg.llm, prompt=prompt)
-    return chain.run({"content": content, "summary": summary, "question": query})
+    return chain.run({"content": content_text, "summary": content_summary, "question": query})

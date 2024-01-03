@@ -20,6 +20,16 @@
 
     [qna_bot]
     system_message = """You are an expert in answering questions from the given context"""
-    human_message = """This is the content provided: {content} and the summary: {summary}
-    Please answer the following question based on the content provided:
-    {question}"""
+
+    human_message = """Based on the following content which starts with ===Start Content=== and ends with ===End Content=== and the summary which starts with ===Start Summary=== 
+    and ends with ===End Summary=== please answer the follwoing question:
+    {question}
+
+    ===Start Content===
+    {content}
+    ===End Content===
+
+    ===Start Summary=== 
+    {summary}
+    ===End Summary===
+    """
