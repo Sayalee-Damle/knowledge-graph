@@ -34,7 +34,7 @@ class Config:
     )
     ui_timeout = int(os.getenv("REQUEST_TIMEOUT"))
     save_fig_path = Path(os.getenv("SAVE_FIG"))
-    
+
     db_path = Path(os.getenv("DB_PATH"))
     chunk_size = int(os.getenv("CHUNK_SIZE"))
 

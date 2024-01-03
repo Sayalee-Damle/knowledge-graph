@@ -22,6 +22,7 @@ def read_graph_gefx(graph_path: Path):
 
 
 def prompt_factory() -> ChatPromptTemplate:
+    """Prompt Factory to derive graph description"""
     section = prompts["graph_desc"]
     human_message = section["human_message"]
     prompt_msgs = [
@@ -41,6 +42,7 @@ def prompt_factory() -> ChatPromptTemplate:
 
 
 def return_description(g_path):
+    """The XML file for each graph is analyzed and summarized"""
     prompt = prompt_factory()
     graph = read_graph_gefx(g_path)
     chain = LLMChain(llm=cfg.llm, prompt=prompt)
@@ -49,28 +51,15 @@ def return_description(g_path):
 
 
 def save_description(sub_path: Path, path_desc: Path):
+    """summary of each subgraph is put into a file"""
     desc = return_description(sub_path)
     print(path_desc)
-    with open(path_desc, 'a+') as f:
+    with open(path_desc, "a+") as f:
         f.write("===========================")
         f.write(desc)
         f.write("\n " + "\n")
 
 
-def read_all_clusters(folder: Path):
-    path_f = cfg.desc_dir / f"graph_desc_{uuid4()}.txt"
-    for root, dirs, files in os.walk(folder):
-        for file in files:
-            print(file)
-            g_path = Path(f"{root}/{file}")
-            try:
-                print("in try")
-                desc = return_description(g_path)
-                save_description(desc, path_f)
-            except:
-                print("in")
-                print("in except")
-                pass
 
 
 if __name__ == "__main__":
@@ -78,4 +67,4 @@ if __name__ == "__main__":
     #desc = read_graph_gefx(file)
     return_description(file)"""
     folder_path = cfg.save_fig_path
-    read_all_clusters(folder_path)
+    

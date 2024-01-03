@@ -22,6 +22,3 @@ class Ontology(BaseModel):
     ontology_terms: List[OntologyTerm] = Field(
         ..., description="The list of description of each term in the ontology"
     )
-
-
-

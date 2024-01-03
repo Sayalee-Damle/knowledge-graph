@@ -1,3 +1,4 @@
+from pathlib import Path
 from uuid import uuid4
 from langchain.document_loaders import TextLoader
 from langchain.embeddings.openai import OpenAIEmbeddings
@@ -8,21 +9,26 @@ import lancedb
 from knowledge_graph.configuration.config import cfg
 from lancedb import DBConnection
 
-    
-def create_embeddings(text: str):    
+
+def create_embeddings(text: str):
     db = lancedb.connect(cfg.db_path)
     table = db.create_table(
         name=f"knowledge_graph_info",
-        data= [{}],
+        data=[
+            {
+                "vector": cfg.emb_func.embed_query("Hello World"),
+                "text": "Hello World",
+                "id": "1",
+            }
+        ],
         mode="overwrite",
     )
 
-    # Load the document, split it into chunks, embed each chunk and load it into the vector store.
-    raw_documents = TextLoader(text).load()
     text_splitter = CharacterTextSplitter(chunk_size=cfg.chunk_size, chunk_overlap=0)
-    documents = text_splitter.split_documents(raw_documents)
-    db = LanceDB.from_documents(documents, cfg.emb_func, connection=table)
+    documents = text_splitter.split_text(text)
+    db = LanceDB.from_texts(documents, cfg.emb_func, connection=table)
     return db
+
 
 def similarity_search(db: DBConnection, query: str):
     docs = db.similarity_search(query)

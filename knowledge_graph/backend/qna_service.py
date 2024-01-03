@@ -15,6 +15,7 @@ prompts = read_prompts_toml()
 
 
 def prompt_factory() -> ChatPromptTemplate:
+    """Prompt Factory for finding answer to questions"""
     section = prompts["qna_bot"]
     human_message = section["human_message"]
     prompt_msgs = [
@@ -32,12 +33,13 @@ def prompt_factory() -> ChatPromptTemplate:
     ]
     return ChatPromptTemplate(messages=prompt_msgs)
 
+
 def return_answer(input_text, summary_path, query):
-    f = open(summary_path, 'r+')
+    """Chain function for finding answer to question"""
+    f = open(summary_path, "r+")
     summary = f.read()
     db = v_db.create_embeddings(input_text)
     content = v_db.similarity_search(db, query)
     prompt = prompt_factory()
     chain = LLMChain(llm=cfg.llm, prompt=prompt)
     return chain.run({"content": content, "summary": summary, "question": query})
-

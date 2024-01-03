@@ -16,6 +16,7 @@ networkx = "^3.2.1"
 matplotlib = "^3.8.2"
 tiktoken = "^0.5.2"
 lancedb = "^0.4.3"
+pandas = "^2.1.4"
 
 
 [tool.poetry.group.dev.dependencies]
