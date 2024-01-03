@@ -4,6 +4,7 @@ import knowledge_graph.backend.read_graph as read_g
 from knowledge_graph.configuration.log_factory import logger
 import knowledge_graph.backend.qna_service as qna
 
+
 def get_ontology_from_text(text: str):
     table = ontology.return_ontology(text)
     ontology_relations, ontology_terms = ontology.extract_ontology(table)
@@ -24,8 +25,6 @@ def qna_bot(text, path_description):
             break
 
 
-
-
 if __name__ == "__main__":
     input_val = """A car, or an automobile, is a motor vehicle with wheels. Most definitions of cars state that they run primarily on roads, seat one to eight people, have four wheels, and mainly transport people, not cargo.[1][2] French inventor Nicolas-Joseph Cugnot built the first steam-powered road vehicle in 1769, while French-born Swiss inventor François Isaac de Rivaz designed and constructed the first internal combustion-powered automobile in 1808.
 
@@ -39,4 +38,3 @@ Car usage is increasing rapidly, especially in China, India, and other newly ind
     #path_desc = get_ontology_from_text(input_val)
     path_desc = r"C:\tmp\graph_desc\graph_desc_da7a5b2c-d182-4afa-b480-e86e347ab0b4.txt"
     print(qna_bot(input_val, path_desc))
-    

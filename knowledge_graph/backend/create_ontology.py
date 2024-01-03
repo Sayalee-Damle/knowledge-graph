@@ -1,3 +1,4 @@
+from typing import List
 from langchain.chains import LLMChain
 from langchain.prompts import (
     PromptTemplate,
@@ -5,10 +6,11 @@ from langchain.prompts import (
     SystemMessagePromptTemplate,
     HumanMessagePromptTemplate,
 )
-from langchain.chains import create_extraction_chain
+from langchain.chains import create_extraction_chain_pydantic
 
 from knowledge_graph.configuration.toml_support import read_prompts_toml
 from knowledge_graph.configuration.config import cfg
+from knowledge_graph.backend.model import Ontology
 
 prompts = read_prompts_toml()
 
@@ -37,26 +39,15 @@ def return_ontology(input_val):
     chain = LLMChain(llm=cfg.llm, prompt=prompt)
     return chain.run({"text": input_val})
 
-def extract_ontology(ontology_tables):
-    schema = {
-        "properties":
-    {"ontology_relations": {
-        "Source": {"type": "string"},
-        "Target": {"type": "string"},
-        "Relation Name":{"type": "string"}
-    },
-    "ontology_terms":{
-        "Term Name":{"type": "string"},
-        "Term Definition":{"type": "string"},
-    }},
-    "required": ["relations", "terms"],
-    }
-    chain = create_extraction_chain(schema, cfg.llm)
-    list_ontology = chain.run(ontology_tables)
-    ontology_relations = list_ontology[0]['ontology_relations']
-    ontology_terms = list_ontology[0]['ontology_terms']
-    return ontology_relations, ontology_terms
 
+def extract_ontology(ontology_tables):
+    
+    chain = create_extraction_chain_pydantic(pydantic_schema=Ontology, llm =cfg.llm)
+    ontologies: List[Ontology] = chain.run(ontology_tables)
+    if len(ontologies) > 0:
+        ontology = ontologies[0]
+        return ontology.ontology_relations, ontology.ontology_terms
+    return [], []
 
 if __name__ == "__main__":
     input_val = """A car, or an automobile, is a motor vehicle with wheels. Most definitions of cars state that they run primarily on roads, seat one to eight people, have four wheels, and mainly transport people, not cargo.[1][2] French inventor Nicolas-Joseph Cugnot built the first steam-powered road vehicle in 1769, while French-born Swiss inventor François Isaac de Rivaz designed and constructed the first internal combustion-powered automobile in 1808.
@@ -70,4 +61,4 @@ Car usage is increasing rapidly, especially in China, India, and other newly ind
     tables = return_ontology(input_val)
     ontology_relations, ontology_terms = extract_ontology(tables)
     print("ontology_relations:  ", ontology_relations)
-    print("ontology_terms:  ",ontology_terms)
+    print("ontology_terms:  ", ontology_terms)

@@ -7,7 +7,6 @@ import openai
 import langchain
 
 
-
 load_dotenv()
 langchain.debug = os.getenv("LANGCHAIN_DEBUG") == "True"
 
@@ -22,7 +21,7 @@ class Config:
 
     desc_dir = Path(os.getenv("CODE_DIR"))
     if not desc_dir.exists():
-        desc_dir.mkdir(exist_ok=True, parents = True)
+        desc_dir.mkdir(exist_ok=True, parents=True)
 
     llm = ChatOpenAI(
         openai_api_key=os.getenv("OPENAI_API_KEY"),
@@ -38,11 +37,13 @@ class Config:
     
     db_path = Path(os.getenv("DB_PATH"))
     chunk_size = int(os.getenv("CHUNK_SIZE"))
+
+
 cfg = Config()
 
 
 if __name__ == "__main__":
-    #print("key: ", cfg.openai_api_key)
+    # print("key: ", cfg.openai_api_key)
     print("model: ", cfg.model_name)
     print("configlist: ", cfg.save_fig_path)
     print("langchain-debug: ", langchain.debug)
