@@ -35,12 +35,11 @@ def prompt_factory() -> ChatPromptTemplate:
     return ChatPromptTemplate(messages=prompt_msgs)
 
 
-def return_answer(input_text: str, summary_path: Path, query: str):
+def return_answer(query: str):
     """Chain function for finding answer to question"""
 
-    db_text, db_summary = v_db.create_embeddings_text(input_text, summary_path)
-    content_text = v_db.similarity_search(db_text, query)
-    content_summary = v_db.similarity_search(db_summary, query)
+    #db_text, db_summary = v_db.create_embeddings_text(input_text, summary_path)
+    content_text, content_summary = v_db.similarity_search(query)
     prompt = prompt_factory()
     chain = LLMChain(llm=cfg.llm, prompt=prompt)
     return chain.run({"content": content_text, "summary": content_summary, "question": query})

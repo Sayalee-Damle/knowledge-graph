@@ -34,6 +34,10 @@ def create_subgraph(G):
     Output: path of the file where description is stored
     """
     path_desc = cfg.desc_dir / f"graph_desc_{uuid4()}.txt"
+    path_subg_folder = path_fig / f"graph_{uuid4()}"
+    if not path_subg_folder.exists():
+        path_subg_folder.mkdir(exist_ok=True, parents=True)
+
     dict_graphs = subg.find_subgraphs(G)
     print(dict_graphs)
     path_fig = cfg.save_fig_path
@@ -47,7 +51,7 @@ def create_subgraph(G):
 
         print(path_fig)
 
-        path_subg = path_fig / f"subgraph_{k}.gefx"
+        path_subg = path_subg_folder/ f"subgraph_{k}.gefx"
         nx.write_gexf(H, path_subg)
 
         try:

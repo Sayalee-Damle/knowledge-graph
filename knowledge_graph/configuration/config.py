@@ -23,6 +23,10 @@ class Config:
     if not desc_dir.exists():
         desc_dir.mkdir(exist_ok=True, parents=True)
 
+    graph_input_path = Path(os.getenv("INPUT_PATH"))
+    if not graph_input_path.exists():
+        graph_input_path.mkdir(exist_ok=True, parents=True)
+
     llm = ChatOpenAI(
         openai_api_key=os.getenv("OPENAI_API_KEY"),
         model=model_name,
