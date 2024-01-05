@@ -25,14 +25,14 @@ def get_ontology_from_text(text: str):
 
 
 
-def qna_bot():
+async def qna_bot():
     """Input: input text and the path of the .txt file of the summary
     Returns: Answer to user question"""
     while True:
         ques = input("Do you have any questions?[yes/no]: ")
         if ques.lower() in ("y", "yes"):
             query = input("Question: ")
-            ans = qna.return_answer(query)
+            ans = await qna.return_answer(query)
             print(ans)
 
         else:

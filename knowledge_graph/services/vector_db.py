@@ -19,7 +19,7 @@ def check_if_embedding_exists(text: str):
     else:
         return False
 
-def create_embeddings_text(text: str):
+async def create_embeddings_text(text: str):
     db = lancedb.connect(cfg.db_path)
     table_text = db.create_table(
         name=f"knowledge_graph_text",
@@ -39,7 +39,7 @@ def create_embeddings_text(text: str):
     return db_text
     
 
-def create_embeddings_summary(summary_path: Path):
+async def create_embeddings_summary(summary_path: Path):
     db = lancedb.connect(cfg.db_path)
    
     table_summary = db.create_table(
@@ -64,7 +64,7 @@ def create_embeddings_summary(summary_path: Path):
 
 
 
-def similarity_search(query: str):
+async def similarity_search(query: str):
     db = lancedb.connect(cfg.db_path)
     tbl_text = db.open_table("knowledge_graph_text")
     tbl_summary = db.open_table("knowledge_graph_summary")

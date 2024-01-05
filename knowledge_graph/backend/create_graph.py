@@ -13,7 +13,7 @@ from knowledge_graph.backend.model import Ontology, OntologyRelation
 import knowledge_graph.backend.create_subgraphs as subg
 
 
-def create_network(ontology_relations: List[Ontology]):
+async def create_network(ontology_relations: List[Ontology]):
     """Create a graph from the relations"""
     G = nx.Graph()
     for i in ontology_relations:
