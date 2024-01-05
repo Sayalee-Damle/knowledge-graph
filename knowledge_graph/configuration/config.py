@@ -42,6 +42,7 @@ class Config:
     db_path = Path(os.getenv("DB_PATH"))
     chunk_size = int(os.getenv("CHUNK_SIZE"))
 
+    prompts_toml_path = Path(os.getenv("PROMPT_KNOWLEDGE_GRAPH"))
 
 cfg = Config()
 

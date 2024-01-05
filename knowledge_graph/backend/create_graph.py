@@ -24,7 +24,7 @@ async def create_network(ontology_relations: List[Ontology]):
     return G
 
 
-def create_subgraph(G):
+async def create_subgraph(G):
     """Create Subgraphs from graph
     Input: Graph
     Process: 
@@ -34,16 +34,16 @@ def create_subgraph(G):
     Output: path of the file where description is stored
     """
     path_desc = cfg.desc_dir / f"graph_desc_{uuid4()}.txt"
+    path_fig = cfg.save_fig_path
+    if not path_fig.exists():
+        path_fig.mkdir(exist_ok=True, parents=True)
     path_subg_folder = path_fig / f"graph_{uuid4()}"
     if not path_subg_folder.exists():
         path_subg_folder.mkdir(exist_ok=True, parents=True)
 
     dict_graphs = subg.find_subgraphs(G)
     print(dict_graphs)
-    path_fig = cfg.save_fig_path
-    if path_fig.exists():
-        shutil.rmtree(path_fig)
-    path_fig.mkdir(parents=True)
+    
     for k, v in dict_graphs.items():
         print(k)
         print("in for")
@@ -55,7 +55,7 @@ def create_subgraph(G):
         nx.write_gexf(H, path_subg)
 
         try:
-            read_g.save_description(path_subg, path_desc)
+            await read_g.save_description(path_subg, path_desc)
         except:
             pass
     return path_desc

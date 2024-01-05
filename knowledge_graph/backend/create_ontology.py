@@ -38,13 +38,13 @@ def prompt_factory() -> ChatPromptTemplate:
 async def return_ontology(input_val):
     prompt = prompt_factory()
     chain = LLMChain(llm=cfg.llm, prompt=prompt)
-    return chain.arun({"text": input_val})
+    return await chain.arun({"text": input_val})
 
 
 async def extract_ontology(ontology_tables):
     """Extracting tables into a format"""
     chain = create_extraction_chain_pydantic(pydantic_schema=Ontology, llm=cfg.llm)
-    ontologies: List[Ontology] = chain.arun(ontology_tables)
+    ontologies: List[Ontology] = await chain.arun(ontology_tables)
     if len(ontologies) > 0:
         ontology = ontologies[0]
         return ontology.ontology_relations, ontology.ontology_terms

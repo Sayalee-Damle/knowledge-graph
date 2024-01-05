@@ -42,4 +42,4 @@ async def return_answer(query: str):
     content_text, content_summary = await v_db.similarity_search(query)
     prompt = prompt_factory()
     chain = LLMChain(llm=cfg.llm, prompt=prompt)
-    return chain.run({"content": content_text, "summary": content_summary, "question": query})
+    return await chain.arun({"content": content_text, "summary": content_summary, "question": query})

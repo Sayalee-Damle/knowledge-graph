@@ -41,18 +41,18 @@ def prompt_factory() -> ChatPromptTemplate:
     return ChatPromptTemplate(messages=prompt_msgs)
 
 
-def return_description(g_path):
+async def return_description(g_path):
     """The XML file for each graph is analyzed and summarized"""
     prompt = prompt_factory()
     graph = read_graph_gefx(g_path)
     chain = LLMChain(llm=cfg.llm, prompt=prompt)
-    desc = chain.run({"graph": graph})
+    desc = await chain.arun({"graph": graph})
     return desc
 
 
-def save_description(sub_path: Path, path_desc: Path):
+async def save_description(sub_path: Path, path_desc: Path):
     """summary of each subgraph is put into a file"""
-    desc = return_description(sub_path)
+    desc = await return_description(sub_path)
     print(path_desc)
     with open(path_desc, "a+") as f:
         f.write("===========================")

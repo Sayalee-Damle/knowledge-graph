@@ -5,7 +5,7 @@ from knowledge_graph.configuration.config import cfg
 
 async def put_into_directory(input_text: str):
     input_path = cfg.graph_input_path
-    with open(input_path/f"{uuid4()}.txt") as f:
+    with open(input_path / f"{uuid4()}.txt", 'w') as f:
         f.write(input_text)
 
 async def check_if_text_exists(input_text: str):
