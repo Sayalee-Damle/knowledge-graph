@@ -5,7 +5,7 @@ import knowledge_graph.backend.read_graph as read_g
 from knowledge_graph.configuration.log_factory import logger
 import knowledge_graph.backend.qna_service as qna
 import knowledge_graph.services.vector_db as v_db
-import knowledge_graph.services.check_input as chk_inp
+import knowledge_graph.frontend.text_finder as chk_inp
 
 
 def get_ontology_from_text(text: str):
